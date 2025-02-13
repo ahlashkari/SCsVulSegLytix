@@ -1,4 +1,4 @@
-![](https://github.com/ahlashkari/SCsVulSegLyzer/blob/master/bccc.jpg)
+![](https://github.com/ahlashkari/SCsVulSegLyzer/blob/main/bccc.jpg)
 
 # SCsVulSegLyzer
 Smart Contracts Vulnerable Segment Analyzer 
