@@ -97,7 +97,7 @@ Here, for a vulnerability named ```Vulnerability```, ```Vulnerability/vul/contra
 
 * [**Arash Habibi Lashkari:**](http://ahlashkari.com/index.asp) Founder and supervisor
 
-* [**Borna Ahmadzadegan:**](https://github.com/BobMcDear) Undergraduate student, Researcher and developer - York University ( 6 months years, 2024 - 2024)
+* [**Borna Ahmadzadeh:**](https://github.com/BobMcDear) Undergraduate student, Researcher and developer - York University ( 6 months years, 2024 - 2024)
 
 
 # Acknowledgment
