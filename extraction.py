@@ -12,6 +12,7 @@ from transformers import AutoTokenizer
 from pathlib import Path
 
 from bert import BertForSequenceClassification
+from bert import Linear
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
@@ -179,7 +180,7 @@ def convert_linear_model(lin: torch.nn.Linear, i: int):
     bias = lin.bias.data[i].unsqueeze(0)
     new_weight = torch.concat([torch.zeros_like(weight), weight])
     new_bias = torch.concat([torch.zeros_like(bias), bias])
-    new = torch.nn.Linear(new_weight.shape[1], new_weight.shape[0], device=device).eval()
+    new = Linear(new_weight.shape[1], new_weight.shape[0], device=device).eval()
     new.weight.data = new_weight
     new.bias.data = new_bias
     return new
@@ -197,7 +198,6 @@ def extract(
                          truncation=True, max_length=8_192)
     input_ids = encoding['input_ids'].to(device)
     attention_mask = encoding['attention_mask'].to(device)
-
 
     logits = model(input_ids=input_ids, attention_mask=attention_mask)[0]
     output = torch.nn.functional.softmax(logits, dim=-1)
