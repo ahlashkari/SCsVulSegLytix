@@ -217,7 +217,7 @@ def extract(
 
     vul_seg_ = tokenizer.convert_ids_to_tokens(vul_tokens)
     sec_seg_ = tokenizer.convert_ids_to_tokens(sec_tokens)
-    return ''.join(vul_seg_).replace('Ġ', ' '), ''.join(sec_seg_).replace('Ġ', ' ')
+    return ''.join(vul_seg_).replace('Ġ', ' ').replace('Ċ', '\n'), ''.join(sec_seg_).replace('Ġ', ' ').replace('Ċ', '\n')
 
 
 def create_dataset(
