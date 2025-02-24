@@ -8,6 +8,7 @@ import os
 import numpy as np
 import pandas as pd
 import os
+import re
 from transformers import AutoTokenizer
 from pathlib import Path
 
@@ -212,12 +213,32 @@ def extract(
                                      start_layer=0)[0]
     expl = (expl-expl.min()) / (expl.max()-expl.min())
 
-    vul_tokens = input_ids[(torch.quantile(expl, q) < expl).unsqueeze(0)]
-    sec_tokens = input_ids[~(torch.quantile(expl, q) < expl).unsqueeze(0)]
+    whole = tokenizer.convert_ids_to_tokens(input_ids.squeeze(0))
+    vul_or_not = (torch.quantile(expl, q) < expl).cpu()
 
-    vul_seg_ = tokenizer.convert_ids_to_tokens(vul_tokens)
-    sec_seg_ = tokenizer.convert_ids_to_tokens(sec_tokens)
-    return ''.join(vul_seg_).replace('Ġ', ' ').replace('Ċ', '\n'), ''.join(sec_seg_).replace('Ġ', ' ').replace('Ċ', '\n')
+    vul_seg_ = []
+    sec_seg_ = []
+
+    for token, label in zip(whole, vul_or_not):
+        if label == True:
+            vul_seg_ .append(token)
+
+        else:
+            sec_seg_.append(token)
+
+        if token.count('Ċ'):
+            sec_seg_.append('\n')
+            vul_seg_.append('\n')
+
+    vul_seg_ = ''.join(vul_seg_).replace('Ġ', ' ').replace('Ċ', '\n')
+    sec_seg_ = ''.join(sec_seg_).replace('Ġ', ' ').replace('Ċ', '\n')
+
+    def normalize_whitespace(text):
+        text = re.sub(r' {2,}', ' ', text)
+        text = re.sub(r'\n{2,}', '\n', text)
+        return text
+
+    return normalize_whitespace(vul_seg_), normalize_whitespace(sec_seg_)
 
 
 def create_dataset(
