@@ -30,7 +30,7 @@ if prediction == 'Negative':
 # post-hoc interpretability technique TransAtt, which assigns
 # scores to input tokens based on how much they contributed
 # to the model's classification decision.
-rel_scores = trans_att(bert, contract)
+rel_scores = trans_att(bert, tokens)
 # Tokens with a low relevance score are secure, and those with a high score are vulnerable.
 # The threshold is calculated by taking the 80th percentile of the scores.
 sec_tokens = tokens[quantile(rel_scores, 0.8) > rel_scores]
@@ -45,11 +45,11 @@ This process is repeated for each vulnerability type supported by SCsVulSegLyzer
 
 # Installation
 
-To use SCsVulSegLyzer, please first clone this repository using ```git clone https://github.com/ahlashkari/SCsVulSegLyzer.git```, navigate into it, and install its dependencies via ```pip install -r requirements.txt```. It is recommended to use a virtual environment such as ```venv``` to avoid dependency conflicts.
+SCsVulSegLyzer is implemented in Python, so please first make sure Python >= 3.8 is installed on your system. Then, clone this repository using ```git clone https://github.com/ahlashkari/SCsVulSegLyzer.git```, navigate into it, and install its dependencies via ```pip install -r requirements.txt```. It is recommended to use a virtual environment such as ```venv``` to avoid dependency conflicts. This software has been tested on Ubuntu 22.04 with a V100 GPU and an Intel i7-10700K CPU.
 
 # Training
 
-Having downloaded BCCC-VulSCs-2024, place the folder containing the SCs in this directory and rename it to ```orig/```. Training can be done by simply executing ```python train_classifier.py```. This saves the tokenizer and BERT model in the folders ```tokenizer/``` and ```classifier/```, respectively. The trained tokenizer and BERT model already ship with this project for convenience.
+Having downloaded BCCC-VulSCs-2024, place the folder containing the SCs in this directory, rename it to ```orig/```, and execute ```python train_classifier.py```. This trains SCsVulSegLyzer on BCCC-VulSCs-2024 for vulnerability classification and extraction, subsequently validating its results on the test set and printing the relevant metrics. After training, the tokenizer and BERT model are saved in the folders ```tokenizer/``` and ```classifier/```, respectively. For convenience, the trained tokenizer and BERT model already ship with this project. Training is only supported on devices with Nvidia GPUs; however, inference, described in more depth in the next section, works on all devices.
 
 # Inference
 
@@ -92,6 +92,27 @@ Provided with a directory, the script ```extraction.py``` analyzes the SCs there
 ```
 
 Here, for a vulnerability named ```Vulnerability```, ```Vulnerability/vul/contract1.sol``` contains the vulnerable segments, if any, in contract ```contract1.sol``` for that vulnerability type, and ```Vulnerability/sec/contract1.sol``` its secure segments. The same applies to ```contract2.sol```. Note that, if no vulnerabilities are found in a contract, its vulnerable segments will be empty. On GPU-enabled machines, this script automatically utilizes CUDA to speed up computations; otherwise, it resorts to the CPU.
+
+# Performance Metrics
+
+Below are the accuracy, precision, recall, and F1 score of SCsVulSegLyzer on the test set for vulnerability classification per vulnerability type:
+
+| Vulnerability     | Accuracy | Recall | Precision | F1 Score |
+|------------------|----------|--------|-----------|----------|
+| CallToUnknown   | 0.89     | 0.67   | 0.69      | 0.68     |
+| DenialOfService | 0.96     | 0.90   | 0.96      | 0.93     |
+| IntegerUO       | 0.82     | 0.75   | 0.72      | 0.73     |
+| Re-entrancy     | 0.90     | 0.77   | 0.81      | 0.79     |
+
+As for vulnerability extraction, the baseline, vulnerified, and securified scores of our model can be seen in the next table. For the interpretation of these scores, please refer to our article.
+
+| Vulnerability    | Vulnerified (↑) | Baseline | Securified (↓) |
+|-----------------|----------------|----------|----------------|
+| CallToUnknown   | 0.71 (+0.07)    | 0.64     | 0.60 (-0.04)   |
+| DenialOfService | 0.95 (+0.04)    | 0.91     | 0.42 (-0.49)   |
+| IntegerUO       | 0.72 (+0.04)    | 0.68     | 0.60 (-0.08)   |
+| Re-entrancy     | 0.78 (+0.05)    | 0.73     | 0.65 (-0.08)   |
+
 
 # Project Team members
 
