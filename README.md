@@ -1,7 +1,7 @@
 ![](https://github.com/ahlashkari/SCsVulSegLyzer/blob/main/bccc.jpg)
 
 # SCsVulSegLyzer
-SCsVulSegLyzer is a learning-based framework for detecting and extracting vulnerable segments in smart contracts (SCs). It leverages a Transformer model - namely, Bidirectional Encoder Representations from Transformers (BERT) - trained with contract-level labels to extract vulnerable and secure segments from contracts. Thanks to its novel use of a post-hoc interpretability technique, it highlights vulnerable segments without the need for expensive line-level annotations during training, and it improves on graph-based methods by avoiding their costly pre-processing phase. Covering a broad range of SC vulnerabilities, SCsVulSegLyzer outperforms prior methods in terms of accuracy and computational complexity. Its goal is to aid developers and security auditors in accurately analyzing the security of SCs by providing a fine-grained view of vulnerability locations without sacrificing efficiency or ease of use.
+SCsVulSegLyzer is a learning-based framework for detecting and extracting vulnerable segments in smart contracts (SCs). It leverages a Transformer model - namely, Bidirectional Encoder Representations from Transformers (BERT) - trained with contract-level labels to extract vulnerable and secure segments from contracts. Thanks to its novel use of a post-hoc interpretability technique, it highlights vulnerable segments without the need for expensive line-level annotations during training. It also improves graph-based methods by avoiding their costly pre-processing phase. Covering a broad range of SC vulnerabilities, SCsVulSegLyzer outperforms prior methods regarding accuracy and computational complexity. Its goal is to aid developers and security auditors in accurately analyzing the security of SCs by providing a fine-grained view of vulnerability locations without sacrificing efficiency or ease of use.
 
 ![Diagram of model.](./model.svg)
 
@@ -41,15 +41,15 @@ vul = tokenizer.decode(vul_tokens)
 return sec, vul
 ```
 
-This process is repeated for each vulnerability type supported by SCsVulSegLyzer; namely, CallToUnknown, DenialOfService, IntegerUO, and Reentrancy.
+This process is repeated for each vulnerability type supported by SCsVulSegLyzer: CallToUnknown, DenialOfService, IntegerUO, and Reentrancy.
 
 # Installation
 
-SCsVulSegLyzer is implemented in Python, so please first make sure Python >= 3.8 is installed on your system. Then, clone this repository using ```git clone https://github.com/ahlashkari/SCsVulSegLyzer.git```, navigate into it, and install its dependencies via ```pip install -r requirements.txt```. It is recommended to use a virtual environment such as ```venv``` to avoid dependency conflicts. This software has been tested on Ubuntu 22.04 with a V100 GPU and an Intel i7-10700K CPU.
+SCsVulSegLyzer is implemented in Python, so please first ensure Python >= 3.8 is installed on your system. Then, clone this repository using ```git clone https://github.com/ahlashkari/SCsVulSegLyzer.git```, navigate into it, and install its dependencies via ```pip install -r requirements.txt```. Using a virtual environment such as ```venv``` to avoid dependency conflicts. This software has been tested on Ubuntu 22.04 with a V100 GPU and an Intel i7-10700K CPU.
 
 # Training
 
-Having downloaded BCCC-VulSCs-2024, place the folder containing the SCs in this directory, rename it to ```orig/```, and execute ```python train_classifier.py```. This trains SCsVulSegLyzer on BCCC-VulSCs-2024 for vulnerability classification and extraction, subsequently validating its results on the test set and printing the relevant metrics. After training, the tokenizer and BERT model are saved in the folders ```tokenizer/``` and ```classifier/```, respectively. For convenience, the trained tokenizer and BERT model already ship with this project. Training is only supported on devices with Nvidia GPUs; however, inference, described in more depth in the next section, works on all devices.
+Having downloaded BCCC-VulSCs-2024, place the folder containing the SCs in this directory, rename it to ```orig/```, and execute ```python train_classifier.py```. This trains SCsVulSegLyzer on BCCC-VulSCs-2024 for vulnerability classification and extraction, subsequently validating its results on the test set and printing the relevant metrics. After training, the tokenizer and BERT model are saved in the folders ```tokenizer/``` and ```classifier/```, respectively. The trained tokenizer and BERT model have already been shipped with this project for convenience. Training is only supported on devices with Nvidia GPUs; however, inference, described in more depth in the next section, works on all devices.
 
 # Inference
 
@@ -91,7 +91,7 @@ Provided with a directory, the script ```extraction.py``` analyzes the SCs there
 ...
 ```
 
-Here, for a vulnerability named ```Vulnerability```, ```Vulnerability/vul/contract1.sol``` contains the vulnerable segments, if any, in contract ```contract1.sol``` for that vulnerability type, and ```Vulnerability/sec/contract1.sol``` its secure segments. The same applies to ```contract2.sol```. Note that, if no vulnerabilities are found in a contract, its vulnerable segments will be empty. On GPU-enabled machines, this script automatically utilizes CUDA to speed up computations; otherwise, it resorts to the CPU.
+Here, for a vulnerability named ```Vulnerability```, ```Vulnerability/vul/contract1.sol``` contains the vulnerable segments, if any, in contract ```contract1.sol``` for that vulnerability type, and ```Vulnerability/sec/contract1.sol``` its secure segments. The same applies to ```contract2.sol```. Note that if no vulnerabilities are found in a contract, its vulnerable segments will be empty. On GPU-enabled machines, this script automatically utilizes CUDA to speed up computations; otherwise, it resorts to the CPU.
 
 # Performance Metrics
 
@@ -104,7 +104,7 @@ Below are the accuracy, precision, recall, and F1 score of SCsVulSegLyzer on the
 | IntegerUO       | 0.82     | 0.75   | 0.72      | 0.73     |
 | Re-entrancy     | 0.90     | 0.77   | 0.81      | 0.79     |
 
-As for vulnerability extraction, the baseline, vulnerified, and securified scores of our model can be seen in the next table. For the interpretation of these scores, please refer to our article.
+As for vulnerability extraction, our model's baseline, vulnerified, and securified scores can be seen in the following table. For the interpretation of these scores, please refer to our article.
 
 | Vulnerability    | Vulnerified (↑) | Baseline | Securified (↓) |
 |-----------------|----------------|----------|----------------|
@@ -113,14 +113,20 @@ As for vulnerability extraction, the baseline, vulnerified, and securified score
 | IntegerUO       | 0.72 (+0.04)    | 0.68     | 0.60 (-0.08)   |
 | Re-entrancy     | 0.78 (+0.05)    | 0.73     | 0.65 (-0.08)   |
 
+# Copyright (c) 2024
+
+For citation in your works and also understanding SCsVulSegLyzer completely, you can find below published papers:
+
+- “SCsVulSegLyzer: Detecting and Extracting Vulnerable Segments from Smart Contracts Using Weakly-Supervised Learning”, Borna Ahmadzadeha, Arousha Haghighian Roudsari, Sepideh HajiHosseinKhani and Arash Habibi Lashkari, Journal of Systems and Software,
+Volume 231, 2025.
 
 # Project Team members
 
 * [**Arash Habibi Lashkari:**](http://ahlashkari.com/index.asp) Founder and supervisor
 
-* [**Borna Ahmadzadeh:**](https://github.com/BobMcDear) Undergraduate student, Researcher and developer - York University ( 6 months years, 2024 - 2024)
+* [**Borna Ahmadzadeh:**](https://github.com/BobMcDear) Undergraduate student, Researcher and developer - York University ( 6 months, 2024 - 2024)
 
 
 # Acknowledgment
 
-This project has been made possible through funding from the Natural Sciences and Engineering Research Council of Canada — NSERC (#RGPIN-2020-04701) and Canada Research Chair (Tier II) - (#CRC-2021-00340) to Arash Habibi Lashkari.
+This project was made possible by funding from the Natural Sciences and Engineering Research Council of Canada (NSERC - #RGPIN-2020-04701) and Canada Research Chair (Tier II - #CRC-2021-00340) to Arash Habibi Lashkari.
