@@ -18,26 +18,32 @@ Outputs:
 # Data pre-processing.
 tokens = tokenizer.encode(contract)
 tokens = tokens[:8_192]
+
 # Contract-level prediction.
 prediction = transformer.predict(tokens)
+
 # If the contract was labeled secure, it has no vulnerable segments.
 if prediction == 'Negative':
     sec = contract
     vul = ''
     return sec, vul
+
 # Otherwise, its vulnerable segments are extracted.
 # The first step is to calculate relevance scores using the
 # post-hoc interpretability technique TransAtt, which assigns
 # scores to input tokens based on how much they contributed
 # to the model's classification decision.
 rel_scores = trans_att(bert, tokens)
+
 # Tokens with a low relevance score are secure, and those with a high score are vulnerable.
 # The threshold is calculated by taking the 80th percentile of the scores.
 sec_tokens = tokens[quantile(rel_scores, 0.8) > rel_scores]
 vul_tokens = tokens[quantile(rel_scores, 0.8) < rel_scores]
+
 # Secure and vulnerable segments are decoded into plain text and returned.
 sec = tokenizer.decode(sec_tokens)
 vul = tokenizer.decode(vul_tokens)
+
 return sec, vul
 ```
 
@@ -45,21 +51,21 @@ This process is repeated for each vulnerability type supported by SCsVulSegLyzer
 
 # Installation
 
-SCsVulSegLyzer is implemented in Python, so please first ensure Python >= 3.8 is installed on your system. Then, clone this repository using ```git clone https://github.com/ahlashkari/SCsVulSegLyzer.git```, navigate into it, and install its dependencies via ```pip install -r requirements.txt```. Using a virtual environment such as ```venv``` to avoid dependency conflicts. This software has been tested on Ubuntu 22.04 with a V100 GPU and an Intel i7-10700K CPU.
+SCsVulSegLyzer is implemented in Python, so please first ensure Python >= 3.8 is installed on your system. Then, clone this repository using ```git clone https://github.com/ahlashkari/SCsVulSegLyzer.git```, navigate into it, and install its dependencies via ```pip install -r requirements.txt```. Using a virtual environment such as ```venv``` is recommended to avoid dependency conflicts. This software has been tested on Ubuntu 22.04 with a V100 GPU and an Intel i7-10700K CPU.
 
-# Training
+# Training & Evaluation
 
-Having downloaded BCCC-VulSCs-2024, place the folder containing the SCs in this directory, rename it to ```orig/```, and execute ```python train_classifier.py```. This trains SCsVulSegLyzer on BCCC-VulSCs-2024 for vulnerability classification and extraction, subsequently validating its results on the test set and printing the relevant metrics. After training, the tokenizer and BERT model are saved in the folders ```tokenizer/``` and ```classifier/```, respectively. The trained tokenizer and BERT model have already been shipped with this project for convenience. Training is only supported on devices with Nvidia GPUs; however, inference, described in more depth in the next section, works on all devices.
+Having downloaded BCCC-VulSCs-2024, place the folder containing the SCs in this directory, rename it to ```orig/```, and execute ```python -m train_classifier```. This trains SCsVulSegLyzer on BCCC-VulSCs-2024 for vulnerability classification and extraction, subsequently validating its results on the test set and printing the relevant metrics. After training, the tokenizer and BERT model are saved in the folders ```tokenizer/``` and ```classifier/```, respectively. The trained tokenizer and BERT model have already been shipped with this project for convenience. Training is only supported on devices with Nvidia GPUs; however, inference, described in more depth in the next section, works on all devices.
 
 # Inference
 
-Provided with a directory, the script ```extraction.py``` analyzes the SCs therein and extracts their vulnerable and secure segments. Specifically, it creates four new folders, ```CallToUnknown/```, ```DenialOfService/```, ```IntegerUO/```, and ```Reentrancy/```, each with two subfolders ```sec/``` and ```vul/```, which contain the secure and vulnerable segments of each contract for every vulnerability type. For example, given a directory ```example/``` containing two SCs, ```contract1.sol``` and ```contract2.sol```, running ```python extraction.py example/``` will result in the following structure:
+Provided with a directory, the script ```extraction.py``` analyzes the SCs therein and extracts their vulnerable and secure segments. Specifically, it creates four new folders, ```CallToUnknown/```, ```DenialOfService/```, ```IntegerUO/```, and ```Reentrancy/```, each with two subfolders ```sec/``` and ```vul/```, which contain the secure and vulnerable segments of each contract for every vulnerability type. For example, given a directory ```example/``` containing two SCs, ```contract1.sol``` and ```contract2.sol```, running ```python -m extraction example/``` will result in the following structure:
 
 ```
 [Root]
 │── example/
 │ ├── contract1.sol
-| ├── contract1.sol
+| ├── contract2.sol
 │── CallToUnknown/
 │ ├── sec/
 │ │ ├── contract1.sol
@@ -117,7 +123,7 @@ As for vulnerability extraction, our model's baseline, vulnerified, and securifi
 
 For citation in your works and also understanding SCsVulSegLyzer completely, you can find below published papers:
 
-- “SCsVulSegLyzer: Detecting and Extracting Vulnerable Segments from Smart Contracts Using Weakly-Supervised Learning”, Borna Ahmadzadeha, Arousha Haghighian Roudsari, Sepideh HajiHosseinKhani and Arash Habibi Lashkari, Journal of Systems and Software,
+- “SCsVulSegLyzer: Detecting and Extracting Vulnerable Segments from Smart Contracts Using Weakly-Supervised Learning”, Borna Ahmadzadeh, Arousha Haghighian Roudsari, Sepideh HajiHosseinKhani and Arash Habibi Lashkari, Journal of Systems and Software,
 Volume 231, 2025.
 
 # Project Team members

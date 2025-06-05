@@ -21,7 +21,7 @@ from torch.utils.data import DataLoader, Dataset
 from tokenizers import Tokenizer, decoders, models, pre_tokenizers, processors, trainers
 from transformers import BertConfig, GPT2TokenizerFast
 
-from bert_hf import BertForSequenceClassification
+from .bert_hf import BertForSequenceClassification
 
 
 def get_config() -> dict:

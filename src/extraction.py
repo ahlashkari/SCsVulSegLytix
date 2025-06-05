@@ -2,6 +2,7 @@
 Extracts the vulnerable and secure segments of smart contracts contained in a folder.
 """
 
+
 import argparse
 import torch
 import os
@@ -12,8 +13,8 @@ import re
 from transformers import AutoTokenizer
 from pathlib import Path
 
-from bert import BertForSequenceClassification
-from bert import Linear
+from .bert import BertForSequenceClassification
+from .bert import Linear
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
