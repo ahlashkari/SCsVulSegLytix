@@ -1,7 +1,7 @@
 ![](https://github.com/ahlashkari/SCsVulSegLyzer/blob/main/bccc.jpg)
 
-# SCsVulSegLyzer
-SCsVulSegLyzer is a learning-based framework for detecting and extracting vulnerable segments in smart contracts (SCs). It leverages a Transformer model - namely, Bidirectional Encoder Representations from Transformers (BERT) - trained with contract-level labels to extract vulnerable and secure segments from contracts. Thanks to its novel use of a post-hoc interpretability technique, it highlights vulnerable segments without the need for expensive line-level annotations during training. It also improves graph-based methods by avoiding their costly pre-processing phase. Covering a broad range of SC vulnerabilities, SCsVulSegLyzer outperforms prior methods regarding accuracy and computational complexity. Its goal is to aid developers and security auditors in accurately analyzing the security of SCs by providing a fine-grained view of vulnerability locations without sacrificing efficiency or ease of use.
+# SCsVulSegLytix
+SCsVulSegLytix is a learning-based, analytics framework for detecting and extracting vulnerable segments in smart contracts (SCs). It leverages a Transformer model - namely, Bidirectional Encoder Representations from Transformers (BERT) - trained with contract-level labels to extract vulnerable and secure segments from contracts. Thanks to its novel use of a post-hoc interpretability technique, it highlights vulnerable segments without the need for expensive line-level annotations during training. It also improves graph-based methods by avoiding their costly pre-processing phase. Covering a broad range of SC vulnerabilities, SCsVulSegLyzer outperforms prior methods regarding accuracy and computational complexity. Its goal is to aid developers and security auditors in accurately analyzing the security of SCs by providing a fine-grained view of vulnerability locations without sacrificing efficiency or ease of use.
 
 ![Diagram of model.](./model.svg)
 
@@ -51,7 +51,7 @@ This process is repeated for each vulnerability type supported by SCsVulSegLyzer
 
 # Installation
 
-SCsVulSegLyzer is implemented in Python, so please first ensure Python >= 3.8 is installed on your system. Then, clone this repository using ```git clone https://github.com/ahlashkari/SCsVulSegLyzer.git```, navigate into it, and install its dependencies via ```pip install -r requirements.txt```. Using a virtual environment such as ```venv``` is recommended to avoid dependency conflicts. This software has been tested on Ubuntu 22.04 with a V100 GPU and an Intel i7-10700K CPU.
+SCsVulSegLytix is implemented in Python, so please first ensure Python >= 3.8 is installed on your system. Then, clone this repository using ```git clone https://github.com/ahlashkari/SCsVulSegLyzer.git```, navigate into it, and install its dependencies via ```pip install -r requirements.txt```. Using a virtual environment such as ```venv``` is recommended to avoid dependency conflicts. This software has been tested on Ubuntu 22.04 with a V100 GPU and an Intel i7-10700K CPU.
 
 # Training & Evaluation
 
@@ -123,7 +123,7 @@ As for vulnerability extraction, our model's baseline, vulnerified, and securifi
 
 For citation in your works and also understanding SCsVulSegLyzer completely, you can find below published papers:
 
-- “SCsVulSegLyzer: Detecting and Extracting Vulnerable Segments from Smart Contracts Using Weakly-Supervised Learning”, Borna Ahmadzadeh, Arousha Haghighian Roudsari, Sepideh HajiHosseinKhani and Arash Habibi Lashkari, Journal of Systems and Software,
+- “SCsVulSegLytix: Detecting and Extracting Vulnerable Segments from Smart Contracts Using Weakly-Supervised Learning”, Borna Ahmadzadeh, Arousha Haghighian Roudsari, Sepideh HajiHosseinKhani and Arash Habibi Lashkari, Journal of Systems and Software,
 Volume 231, 2025.
 
 # Project Team members
