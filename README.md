@@ -1,11 +1,11 @@
 ![](https://github.com/ahlashkari/SCsVulSegLyzer/blob/main/bccc.jpg)
 
 # SCsVulSegLytix
-SCsVulSegLytix is a learning-based, analytics framework for detecting and extracting vulnerable segments in smart contracts (SCs). It leverages a Transformer model - namely, Bidirectional Encoder Representations from Transformers (BERT) - trained with contract-level labels to extract vulnerable and secure segments from contracts. Thanks to its novel use of a post-hoc interpretability technique, it highlights vulnerable segments without the need for expensive line-level annotations during training. It also improves graph-based methods by avoiding their costly pre-processing phase. Covering a broad range of SC vulnerabilities, SCsVulSegLyzer outperforms prior methods regarding accuracy and computational complexity. Its goal is to aid developers and security auditors in accurately analyzing the security of SCs by providing a fine-grained view of vulnerability locations without sacrificing efficiency or ease of use.
+SCsVulSegLytix is a learning-based, analytics framework for detecting and extracting vulnerable segments in smart contracts (SCs). It leverages a Transformer model - namely, Bidirectional Encoder Representations from Transformers (BERT) - trained with contract-level labels to extract vulnerable and secure segments from contracts. Thanks to its novel use of a post-hoc interpretability technique, it highlights vulnerable segments without the need for expensive line-level annotations during training. It also improves graph-based methods by avoiding their costly pre-processing phase. Covering a broad range of SC vulnerabilities, SCsVulSegLytix outperforms prior methods regarding accuracy and computational complexity. Its goal is to aid developers and security auditors in accurately analyzing the security of SCs by providing a fine-grained view of vulnerability locations without sacrificing efficiency or ease of use.
 
 ![Diagram of model.](./model.svg)
 
-In Python-like pseudo-code, SCsVulSegLyzer behaves roughly as follows during inference:
+In Python-like pseudo-code, SCsVulSegLytix behaves roughly as follows during inference:
 
 ```python
 """
@@ -47,7 +47,7 @@ vul = tokenizer.decode(vul_tokens)
 return sec, vul
 ```
 
-This process is repeated for each vulnerability type supported by SCsVulSegLyzer: CallToUnknown, DenialOfService, IntegerUO, and Reentrancy.
+This process is repeated for each vulnerability type supported by SCsVulSegLytix: CallToUnknown, DenialOfService, IntegerUO, and Reentrancy.
 
 # Installation
 
@@ -55,7 +55,7 @@ SCsVulSegLytix is implemented in Python, so please first ensure Python >= 3.8 is
 
 # Training & Evaluation
 
-Having downloaded BCCC-VulSCs-2024, place the folder containing the SCs in this directory, rename it to ```orig/```, and execute ```python -m src.train_classifier```. This trains SCsVulSegLyzer on BCCC-VulSCs-2024 for vulnerability classification and extraction, subsequently validating its results on the test set and printing the relevant metrics. After training, the tokenizer and BERT model are saved in the folders ```tokenizer/``` and ```classifier/```, respectively. The trained tokenizer and BERT model have already been shipped with this project for convenience. Training is only supported on devices with Nvidia GPUs; however, inference, described in more depth in the next section, works on all devices.
+Having downloaded BCCC-VulSCs-2024, place the folder containing the SCs in this directory, rename it to ```orig/```, and execute ```python -m src.train_classifier```. This trains SCsVulSegLytix on BCCC-VulSCs-2024 for vulnerability classification and extraction, subsequently validating its results on the test set and printing the relevant metrics. After training, the tokenizer and BERT model are saved in the folders ```tokenizer/``` and ```classifier/```, respectively. The trained tokenizer and BERT model have already been shipped with this project for convenience. Training is only supported on devices with Nvidia GPUs; however, inference, described in more depth in the next section, works on all devices.
 
 # Inference
 
@@ -101,7 +101,7 @@ Here, for a vulnerability named ```Vulnerability```, ```Vulnerability/vul/contra
 
 # Performance Metrics
 
-Below are the accuracy, precision, recall, and F1 score of SCsVulSegLyzer on the test set for vulnerability classification per vulnerability type:
+Below are the accuracy, precision, recall, and F1 score of SCsVulSegLytix on the test set for vulnerability classification per vulnerability type:
 
 | Vulnerability     | Accuracy | Recall | Precision | F1 Score |
 |------------------|----------|--------|-----------|----------|
@@ -121,7 +121,7 @@ As for vulnerability extraction, our model's baseline, vulnerified, and securifi
 
 # Copyright (c) 2024
 
-For citation in your works and also understanding SCsVulSegLyzer completely, you can find below published papers:
+For citation in your works and also understanding SCsVulSegLytix completely, you can find below published papers:
 
 - “SCsVulSegLytix: Detecting and Extracting Vulnerable Segments from Smart Contracts Using Weakly-Supervised Learning”, Borna Ahmadzadeh, Arousha Haghighian Roudsari, Sepideh HajiHosseinKhani and Arash Habibi Lashkari, Journal of Systems and Software,
 Volume 231, 2025.
