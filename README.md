@@ -119,7 +119,7 @@ As for vulnerability extraction, our model's baseline, vulnerified, and securifi
 | IntegerUO       | 0.72 (+0.04)    | 0.68     | 0.60 (-0.08)   |
 | Re-entrancy     | 0.78 (+0.05)    | 0.73     | 0.65 (-0.08)   |
 
-# Copyright (c) 2024
+# Copyright (c) 2025
 
 For citation in your works and also understanding SCsVulSegLytix completely, you can find below published papers:
 
